@@ -10,7 +10,7 @@ REQUIREMENTS = (HERE / "requirements.txt").read_text().split('\n')
 
 setup(
     name='nordvpn-connect',
-    version='0.0.5',
+    version='0.0.6',
     packages=['nordvpn_connect'],
     package_data={'nordvpn_connect': ['NordVPN_options/*.txt']},
     url='https://github.com/sorasful/nordvpn-connect',
