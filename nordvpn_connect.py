@@ -13,7 +13,7 @@ import requests
 from loguru import logger
 
 
-def initialize_VPN(server_to_connect_to:str, nordvpn_username=None, nordvpn_password=None):
+def initialize_vpn(server_to_connect_to:str, nordvpn_username=None, nordvpn_password=None):
     """
     Function used to instantiate the NordVPN app, so we can connect later.
     :param nordvpn_username: this will be used if the user is not logged in his NordVPN account
@@ -23,12 +23,12 @@ def initialize_VPN(server_to_connect_to:str, nordvpn_username=None, nordvpn_pass
     """
     server_to_connect_to = server_to_connect_to.strip().lower()
     opsys = platform.system()
+    cwd_path = None
     if opsys == "Windows":
         cwd_path = start_vpn_windows()
 
-    # TODO: add back
-    # elif opsys == "Linux":
-    #     credentials = start_vpn_linux()
+    elif opsys == "Linux":
+        credentials = start_vpn_linux(nordvpn_username=nordvpn_username, nordvpn_password=nordvpn_password)
     else:
         raise Exception("I'm sorry, NordVPN switcher only works for Windows and Linux machines.")
 
@@ -208,7 +208,7 @@ def connect_to_server(command, cwd_path, opsys, server_to_connect_to: str):
         time.sleep(15)
 
 
-def terminate_VPN(parameters: dict):
+def close_vpn_connection(parameters: dict):
     opsys = parameters['platform']
     cwd_path = parameters.get('cwd_path')  # windows specifc
 
