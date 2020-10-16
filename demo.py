@@ -8,7 +8,6 @@ nordvpn_password = ""
 settings = initialize_vpn(destination, nordvpn_username, nordvpn_password)
 rotate_VPN(settings)
 
-
-
+# YOUR STUFF
 
 close_vpn_connection(settings)

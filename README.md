@@ -8,4 +8,4 @@ This lib allows you to connect to a NordVPN server. Works on Windows and Linux.
 
 ## Install 
 
-TODO : Put on Pypi
+``pip install nordvpn-connect``

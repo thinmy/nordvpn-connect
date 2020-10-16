@@ -1,4 +1,5 @@
 import os
+import pathlib
 import platform
 import random
 import re
@@ -28,12 +29,12 @@ def initialize_vpn(server_to_connect_to:str, nordvpn_username=None, nordvpn_pass
         cwd_path = start_vpn_windows()
 
     elif opsys == "Linux":
-        credentials = start_vpn_linux(nordvpn_username=nordvpn_username, nordvpn_password=nordvpn_password)
+        start_vpn_linux(nordvpn_username=nordvpn_username, nordvpn_password=nordvpn_password)
     else:
         raise Exception("I'm sorry, NordVPN switcher only works for Windows and Linux machines.")
 
-    ##open available options and store these in a dict##
-    areas_list = [x.lower().strip() for x in open("NordVPN_options/countrylist.txt", 'r').readlines()]
+    HERE = pathlib.Path(__file__).parent
+    areas_list = [x.lower().strip() for x in open(HERE / "NordVPN_options" / "countrylist.txt", 'r').readlines()]
     country_dict = {'countries': areas_list[0:60], 'europe': areas_list[0:36], 'americas': areas_list[36:44],
                     'africa east india': areas_list[49:60], 'asia pacific': areas_list[49:60],
                     'regions australia': areas_list[60:65], 'regions canada': areas_list[65:68],
