@@ -14,11 +14,12 @@ import requests
 from loguru import logger
 
 
-def initialize_vpn(server_to_connect_to:str, nordvpn_username=None, nordvpn_password=None):
+def initialize_vpn(server_to_connect_to:str, nordvpn_username=None, nordvpn_password=None, nordvpn_token=None):
     """
     Function used to instantiate the NordVPN app, so we can connect later.
     :param nordvpn_username: this will be used if the user is not logged in his NordVPN account
     :param nordvpn_password: this will be used if the user is not logged in his NordVPN account
+    :param nordvpn_token: this will be used if the user is not logged in his NordVPN account
     :param server_to_connect_to: The name of the location to connect to, e.g: france, europe
 
     """
@@ -29,7 +30,7 @@ def initialize_vpn(server_to_connect_to:str, nordvpn_username=None, nordvpn_pass
         cwd_path = start_vpn_windows()
 
     elif opsys == "Linux":
-        start_vpn_linux(nordvpn_username=nordvpn_username, nordvpn_password=nordvpn_password)
+        start_vpn_linux(nordvpn_username=nordvpn_username, nordvpn_password=nordvpn_password, nordvpn_token=nordvpn_token)
     else:
         raise Exception("I'm sorry, NordVPN switcher only works for Windows and Linux machines.")
 
@@ -73,7 +74,7 @@ def initialize_vpn(server_to_connect_to:str, nordvpn_username=None, nordvpn_pass
     return parameters
 
 
-def start_vpn_linux(nordvpn_username, nordvpn_password):
+def start_vpn_linux(nordvpn_username=None, nordvpn_password=None, nordvpn_token=None):
     logger.info("You're using Linux.\n"
                 "Performing system check...\n")
 
@@ -87,7 +88,12 @@ def start_vpn_linux(nordvpn_username, nordvpn_password):
     check_nord_linux_acc = str(check_output(["nordvpn", "account"]))
     if "not logged in" in check_nord_linux_acc:
         try:
-            login_nordvpn = check_output(["nordvpn", "login", "-u", nordvpn_username, "-p", nordvpn_password])
+            if nordvpn_username and nordvpn_password:
+                login_nordvpn = check_output(["nordvpn", "login", "-u", nordvpn_username, "-p", nordvpn_password])
+            elif:
+                login_nordvpn = check_output(["nordvpn", "login", "--token", nordvpn_token)
+            else:
+                raise Exception("Sorry, NordVPN token is required when Username and Password is not informed")
         except subprocess.CalledProcessError:
             raise Exception("Sorry,something went wrong while trying to log in")
         if "Welcome" in str(login_nordvpn):
